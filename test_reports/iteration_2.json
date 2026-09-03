@@ -1,0 +1,37 @@
+{
+  "summary": "Re-verified full auth regression after localStorage→httpOnly cookie migration + regression pass on all previously-passing features. Backend: 22/22 pytest passed (added 3 new tests: cookie flags after login, /auth/logout clears cookie, Bearer fallback still works; fixed 2 pre-existing tests that shared a session and would now inherit the login cookie). Frontend Playwright E2E: cookies+localStorage cleared first, then verified — (1) unauth /admin → /admin/login redirect, (2) wrong password shows 'Usuário ou senha inválidos', (3) Deivid login works, access_token cookie set with httpOnly=true, secure=true, sameSite=None, and NO token in localStorage, (4) KPIs load, (5) session PERSISTS across reload (not bounced), (6) logout redirects to /admin/login and /auth/me returns 401 afterwards (console error confirms), (7) /admin protected again post-logout, (8) Bruno login works, (9) search filter, audit dialog, ticket list all functional. Admin Deivid chat sheet was not re-driven end-to-end via UI in this run (sheet-open selector timeout after 5s), but /api/chat scope=admin streaming was verified via pytest.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Admin — audit dialog", "issues": ["Radix a11y warning still present: 'Missing Description or aria-describedby for DialogContent'. Non-blocking; carried over from iteration 1."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "(Optional/low) Add DialogDescription or aria-describedby to the audit-trail DialogContent and Deivid SheetContent to silence Radix warnings."
+  ],
+  "critical_code_review_comments": [
+    "Auth cookie config is correct: httpOnly=True, secure=True, samesite='lax', max_age=7d, path='/'. Browser reports sameSite='None' because Secure+cross-site iframe context; still same-site to the app domain and cookie IS sent → works.",
+    "get_current_admin correctly reads cookie 'access_token' first then falls back to Authorization: Bearer — verified both paths in tests.",
+    "/api/auth/logout uses response.delete_cookie('access_token', path='/'). After logout, /auth/me returns 401 (verified). Note: Playwright's context.cookies() may still list the cookie briefly with empty value; behavior is correct.",
+    "Frontend api.js uses withCredentials:true globally; no token stored in localStorage (verified). AuthContext memoizes value and check() runs on mount → session restore works.",
+    "CORS: allow_credentials=True with allow_origins from env — good. Since frontend/backend are same-origin on preview, cookies flow without issue.",
+    "seed_admins is idempotent AND now re-hashes when env password changes — good.",
+    "Minor: previous backend tests used one shared requests.Session for negative auth checks; once a login runs in a parallel worker, the cookie sticks and negative tests can flip to 200. Fixed by using fresh Session in test_me_no_token and test_list_requires_auth."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py"
+  ],
+  "success_rate": {"backend": "100% (22/22)", "frontend": "100% of the cookie-auth flow (login/reload-persist/logout/protect + Bruno + wrong-pw + filters + audit)"},
+  "test_credentials": "deividsuporte2006 / 83668743 and bruno / 81718608 (login by username, case-insensitive on backend)",
+  "seed_data_creation": "No new seed data required. Existing TEST_/PW_ tickets from iteration 1 still present (GT-88B92E, GT-9D2795, GT-34B85E).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend tests at /app/backend/tests/backend_test.py — 22 tests including 3 new cookie-auth tests. Run: `pytest backend/tests/backend_test.py -v` (pytest-xdist runs by default per /app/backend/pytest.ini; tests are safe under parallel). Login testids: admin-input-username, admin-input-password, admin-btn-login, login-error, btn-logout. Cookie is httpOnly so it cannot be read from JS — always test session persistence via page.reload() then assert URL is not /admin/login and admin-kpi-open is visible.",
+  "rca of the issue": "No functional issue. Only a test-side bug uncovered by the auth change: previously the shared requests.Session held no cookie, so /auth/me without headers naturally returned 401. After the cookie migration, once a login runs in the same session the cookie sticks and /auth/me returns 200. Fixed by isolating the 2 negative-auth tests to fresh Sessions."
+}

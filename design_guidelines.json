@@ -1,0 +1,200 @@
+{
+  "project_name": "grau TI — Sistema de Chamados (Helpdesk) da grau Técnico",
+  "app_type": "hybrid_fullstack",
+  "theme": {
+    "mode": "dark",
+    "style": "Cyberpunk Tactical Professional (Clean, modern, high-contrast, non-cluttered)",
+    "description": "Emerald Green & Dark Obsidian theme aligned with 'grau Técnico' and 'grau TI' brand identity. Tactical minimalism without distracting AI slop, bloated neon glows, or visual noise.",
+    "color_palette": {
+      "background": "#070D0A",
+      "surface_base": "#0E1511",
+      "surface_card": "#141F18",
+      "surface_hover": "#1B2A21",
+      "border_subtle": "#1E3326",
+      "border_highlight": "#2E523E",
+      "primary_green": "#10B981",
+      "primary_green_neon": "#00FF87",
+      "primary_green_muted": "#064E3B",
+      "text_main": "#ECFDF5",
+      "text_muted": "#9CA3AF",
+      "text_dim": "#6B7280",
+      "accent_cyan": "#06B6D4",
+      "warning_amber": "#F59E0B",
+      "danger_red": "#EF4444",
+      "success_emerald": "#10B981"
+    },
+    "hsl_tokens": {
+      "--background": "150 30% 4%",
+      "--foreground": "150 60% 96%",
+      "--card": "145 25% 7%",
+      "--card-foreground": "150 60% 96%",
+      "--popover": "145 25% 7%",
+      "--popover-foreground": "150 60% 96%",
+      "--primary": "158 84% 39%",
+      "--primary-foreground": "150 30% 4%",
+      "--secondary": "145 20% 12%",
+      "--secondary-foreground": "150 60% 96%",
+      "--muted": "145 15% 14%",
+      "--muted-foreground": "150 10% 65%",
+      "--accent": "158 84% 39%",
+      "--accent-foreground": "150 30% 4%",
+      "--destructive": "0 84% 60%",
+      "--destructive-foreground": "0 0% 98%",
+      "--border": "145 20% 16%",
+      "--input": "145 20% 16%",
+      "--ring": "158 84% 39%",
+      "--radius": "0.5rem"
+    }
+  },
+  "branding_rules": {
+    "public_page": {
+      "logo_text": "grau Técnico",
+      "badge": "Central de Suporte de TI",
+      "subtitle": "Abertura rápida e acompanhamento de chamados de suporte técnico",
+      "placement": "Top header / Hero banner left side"
+    },
+    "admin_page": {
+      "logo_text": "grau TI",
+      "badge": "Painel de Gestão & Operações",
+      "subtitle": "Gestão de chamados, auditoria e inteligência operacional",
+      "placement": "Top navigation header left side"
+    },
+    "ai_assistant": {
+      "name": "Deivid",
+      "role": "Assistente Virtual de TI (Somente Leitura & Resumos)",
+      "public_presence": "Caixa / Widget lateral para auxílio rápido, verificação de status de chamado e perguntas frequentes de TI",
+      "admin_presence": "Painel lateral inteligente para resumos automáticos de chamados, detecção de problemas por sala e relatórios"
+    }
+  },
+  "typography": {
+    "font_family_heading": "Outfit, 'JetBrains Mono', sans-serif",
+    "font_family_body": "Inter, system-ui, -apple-system, sans-serif",
+    "hierarchy": {
+      "h1": "text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-emerald-50",
+      "h2": "text-2xl sm:text-3xl font-bold tracking-tight text-emerald-100",
+      "h3": "text-xl sm:text-2xl font-semibold text-emerald-200",
+      "h4": "text-lg sm:text-xl font-medium text-emerald-300",
+      "body": "text-sm sm:text-base leading-relaxed text-gray-300",
+      "small_label": "text-xs font-medium uppercase tracking-wider text-emerald-400/80"
+    }
+  },
+  "layouts_and_components": {
+    "public_ticket_form": {
+      "structure": "Grid de 2 colunas no desktop (Formulário Principal na esquerda 7 cols, Assistente Deivid + Status na direita 5 cols)",
+      "required_fields": [
+        "Nome Completo (Identificação obrigatória)",
+        "Prédio / Bloco (dropdown ou seleção)",
+        "Andar (dropdown ou texto)",
+        "Sala / Laboratório (dropdown ou texto)"
+      ],
+      "device_status_grid": {
+        "title": "Status dos Equipamentos e Conexão",
+        "items": [
+          {"id": "pc_status", "label": "Computador / PC"},
+          {"id": "mouse_status", "label": "Mouse"},
+          {"id": "keyboard_status", "label": "Teclado"},
+          {"id": "internet_projector_status", "label": "Internet / Projetor"}
+        ],
+        "states": ["OK / Funcionando", "Com Defeito / Problema"]
+      },
+      "priority_selector": ["Baixa", "Média", "Alta", "Urgente"],
+      "deivid_flag": "Marcar opção 'Desejo falar diretamente com o Deivid (IA)' para priorização na leitura",
+      "notes_field": "Observações detalhadas sobre o problema"
+    },
+    "admin_dashboard": {
+      "kpi_grid": [
+        {"key": "total_open", "title": "Chamados Abertos", "color": "emerald"},
+        {"key": "in_progress", "title": "Em Andamento", "color": "amber"},
+        {"key": "urgent", "title": "Urgentes", "color": "red"},
+        {"key": "resolved", "title": "Resolvidos", "color": "blue"}
+      ],
+      "filter_bar": {
+        "search_input": "Buscar por solicitante, sala ou id do chamado",
+        "building_select": "Filtrar por Prédio/Bloco",
+        "priority_select": "Filtrar por Prioridade",
+        "status_select": "Filtrar por Status (Aberto, Em Andamento, Resolvido, Cancelado)",
+        "archive_toggle": "Alternar para Ver Chamados Arquivados"
+      },
+      "ticket_table": {
+        "columns": [
+          "ID & Data",
+          "Solicitante & Local (Prédio/Andar/Sala)",
+          "Equipamentos afetados",
+          "Prioridade",
+          "Status (Edição inline)",
+          "Deivid Flag",
+          "Ações (Detalhes, Histórico, Arquivar)"
+        ],
+        "inline_status_options": ["Aberto", "Em Andamento", "Resolvido", "Cancelado"],
+        "archive_rule": "Nunca deletar chamados do banco de dados! Ação de arquivar apenas altera flag archived: true e remove da lista principal."
+      },
+      "audit_trail_modal": {
+        "title": "Histórico de Auditoria do Chamado",
+        "details": "Exibe quem alterou (ex: Bruno ou Deivid), horário exato, de qual status para qual status e observações adicionais."
+      },
+      "ai_assistant_panel": {
+        "title": "Assistente Deivid — Leitura e Resumos",
+        "features": [
+          "Gerar resumo executivo dos chamados abertos",
+          "Agrupar principais falhas por sala ou equipamento",
+          "Filtro inteligente de chamados que exigiram atenção do Deivid"
+        ]
+      }
+    }
+  },
+  "media_assets": {
+    "image_urls": {
+      "server_room_tech": "https://images.pexels.com/photos/37605911/pexels-photo-37605911.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "technician_work": "https://images.pexels.com/photos/442151/pexels-photo-442151.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "workspace_desk": "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MTJ8MHwxfHNlYXJjaHw0fHxvZmZpY2UlMjBjb21wdXRlciUyMHdvcmtzcGFjZSUyMGRlc2t8ZW58MHx8fHwxNzg4MjgyODYxfDA&ixlib=rb-4.1.0&q=85"
+    }
+  },
+  "testing_attributes": {
+    "rule": "Every button, input, select, card, table row, badge, and tab MUST include a data-testid attribute in kebab-case.",
+    "sample_test_ids": [
+      "public-ticket-form",
+      "input-requester-name",
+      "select-building",
+      "input-floor",
+      "input-room",
+      "device-toggle-pc",
+      "device-toggle-mouse",
+      "device-toggle-keyboard",
+      "device-toggle-internet-projector",
+      "select-priority",
+      "checkbox-talk-deivid",
+      "input-notes",
+      "btn-submit-ticket",
+      "deivid-chat-panel",
+      "deivid-chat-input",
+      "deivid-chat-send",
+      "admin-login-form",
+      "admin-input-username",
+      "admin-input-password",
+      "admin-btn-login",
+      "admin-kpi-open",
+      "admin-kpi-in-progress",
+      "admin-kpi-urgent",
+      "admin-kpi-resolved",
+      "admin-search-input",
+      "admin-filter-building",
+      "admin-filter-priority",
+      "admin-filter-status",
+      "admin-toggle-archived",
+      "admin-ticket-row",
+      "admin-status-dropdown",
+      "admin-btn-audit-trail",
+      "admin-btn-archive-ticket"
+    ]
+  },
+  "instructions_to_main_agent": [
+    "1. Adhere strictly to the requested dark emerald/black theme without adding excessive messy glows or overly bright gradients.",
+    "2. Ensure 'grau Técnico' branding is highlighted on the public creation page and 'grau TI' is highlighted on the Admin top navigation.",
+    "3. Implement JWT/bcrypt admin authentication (accounts for Deivid and Bruno) with proper local token persistence and protected routes.",
+    "4. Make sure ticket status changes can be performed inline in the admin table and automatically produce an audit log entry recorded with user name, timestamp, and status change.",
+    "5. Ensure the archive functionality sets an archived flag rather than deleting data from the database.",
+    "6. Include the Deivid AI assistant component on both public and admin pages (for public: quick FAQ and ticket lookup; for admin: ticket summary and intelligent incident report).",
+    "7. Add toast notification feedback via 'sonner' for every form submission, login event, status update, and archive action.",
+    "8. Guarantee responsive layout for mobile and desktop viewports and add data-testid to all key interactive elements."
+  ]
+}
